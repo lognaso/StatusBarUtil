@@ -518,7 +518,11 @@ public class StatusBarUtil {
         setMIUIStatusBarDarkIcon(activity, true);
         setMeizuStatusBarDarkIcon(activity, true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            int visibility = activity.getWindow().getDecorView().getSystemUiVisibility();
+            if (visibility != (visibility | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)) {
+                visibility = visibility | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
+            activity.getWindow().getDecorView().setSystemUiVisibility(visibility);
         }
     }
 
@@ -527,7 +531,11 @@ public class StatusBarUtil {
         setMIUIStatusBarDarkIcon(activity, false);
         setMeizuStatusBarDarkIcon(activity, false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            int visibility = activity.getWindow().getDecorView().getSystemUiVisibility();
+            if (visibility == (visibility | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)) {
+                visibility = visibility ^ View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
+            activity.getWindow().getDecorView().setSystemUiVisibility(visibility);
         }
     }
 
